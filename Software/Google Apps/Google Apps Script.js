@@ -12,7 +12,7 @@ function doGet(e)
   var column = {"date": 1, "power": 2, "cost": 3, "data": 4};
   
   var data = e.parameter;
-  //var data = {"time": "1421064000", "power": "2"}; // Dummy data for debugging
+  //var data = {"time": "1422748800", "power": "42"}; // Dummy data for debugging
   
   if(!data.time || !data.power)
   {
@@ -138,11 +138,6 @@ function doGet(e)
   // Update the month sheet
   var sheetMonth = spreadsheet.getSheetByName(sheet.month);
   
-  // Fetch the current data month number
-  var dataDate = new Date(data.date);
-  var dataYear = date.getFullYear();
-  var dataMonth = date.getMonth() + 1; // because January = 0
-  
   // See if there's already a row with the current year/month, otherwise create it
   var rowId = -1;
   
@@ -156,7 +151,7 @@ function doGet(e)
     var year = date.getFullYear();
     var month = date.getMonth() + 1; // because January = 0
     
-    if(dataYear == year && dataMonth == month)
+    if(d_y == year && d_m == month)
     {
       rowId = parseInt(i) + rowOffset;
       break;
@@ -174,7 +169,7 @@ function doGet(e)
     rowId = lastRow + 1;
     
     // Update the date
-    sheetMonth.getRange(rowId, column.date).setValue(dataYear + "-" + (dataMonth < 10 ? "0" + dataMonth : dataMonth) + "-01");
+    sheetMonth.getRange(rowId, column.date).setValue(d_y + "-" + (d_m < 10 ? "0" + d_m : d_m) + "-01");
     
     // Update the power sum formula using the row before it
     var powerTotal = sheetMonth.getRange(lastRow, column.power).getFormulaR1C1();
